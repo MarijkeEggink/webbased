@@ -1,0 +1,22 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{tab.title}">_offline_</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1 th:text="#{page.title}">_offline species_</h1>
+<table>
+    <thead>
+    <tr>
+        <th th:text="#{scientific.name}">_offline scientific_</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="penguin:${penguins}">
+        <td><a th:href="@{'/species.detail?species=' + ${penguin.getSpecies()}}"
+               th:text="${penguin.getScientificName()}">_scientific_</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
