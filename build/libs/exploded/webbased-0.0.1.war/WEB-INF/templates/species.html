@@ -3,11 +3,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title th:text="${penguin.getSpecies()}">_offline_</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div>
+<div class="jumbotron text-center">
     <h1 th:text="${penguin.getScientificName()}">_scientific offline_</h1>
-    <img th:src="@{'/Users/Marijke/Studie/Thema10/Webbased/webbased/' + ${penguin.getPicture()}}">
 </div>
+<div class="container">
+    <img th:src="@{${penguin.getPicture()}}" class="rounded" width="25%" height="25%">
+</div>
+<div th:insert="~{templates :: history-class}"></div>
 </body>
 </html>
