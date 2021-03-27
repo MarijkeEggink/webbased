@@ -4,6 +4,7 @@ import nl.bioinf.meggink.webbased.config.WebConfig;
 import nl.bioinf.meggink.webbased.model.CollectionClass;
 import nl.bioinf.meggink.webbased.model.History;
 import nl.bioinf.meggink.webbased.model.Penguin;
+import nl.bioinf.meggink.webbased.model.User;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -39,6 +40,11 @@ public class DetailsServlet extends HttpServlet {
             history = (History)session.getAttribute("history");
         }
 
+        User user = null;
+        if (session.getAttribute("user") != null){
+            user = (User)session.getAttribute("user");
+        }
+
         WebConfig.configureResponse(response);
         Locale locale = request.getLocale();
         WebContext ctx = new WebContext(
@@ -51,8 +57,9 @@ public class DetailsServlet extends HttpServlet {
             String name = penguin.getSpecies();
             if (name.equals(species)){
                 history.addItem(penguin);
-                ctx.setVariable("listing", history.getHistory());
+                ctx.setVariable("historyList", history.getHistory());
                 ctx.setVariable("penguin", penguin);
+                ctx.setVariable("user", user);
             }
         }
 

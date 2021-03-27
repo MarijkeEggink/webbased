@@ -1,0 +1,26 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="jumbotron text-center">
+    <h1 th:text="#{page.title}">_offline login_</h1>
+    <p th:text="${message}" th:class="${message_type}">_offline message_</p>
+</div>
+<div class="container">
+    <div class="row">
+        <form action="login" method="POST">
+            <label for="username_field">User name: </label>
+            <input id="username_field" type="text" name="username" required/> <br/>
+            <label for="password_field">User password: </label>
+            <input id="password_field" type="password" name="password" required/> <br/>
+            <label class="login_field"></label>
+            <input type="submit" value="OK"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>
