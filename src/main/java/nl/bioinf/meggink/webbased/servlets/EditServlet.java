@@ -18,7 +18,7 @@ public class EditServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException{
-        this.templateEngine = WebConfig.createTemplateEngine(getServletContext());
+        this.templateEngine = WebConfig.getTemplateEngine();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{

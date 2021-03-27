@@ -3,9 +3,27 @@ package nl.bioinf.meggink.webbased.config;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletResponse;
-public class WebConfig {
-    public static TemplateEngine createTemplateEngine(ServletContext servletContext) {
+
+@WebListener
+public class WebConfig implements ServletContextListener {
+    private static TemplateEngine templateEngine;
+
+    @Override
+    public void contextInitialized(ServletContextEvent servletContextEvent) {
+        System.out.println("[WebConfig] Initializing template engine");
+        createTemplateEngine(servletContextEvent.getServletContext());
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        System.out.println("Shutting down!");
+    }
+
+    public static void createTemplateEngine(ServletContext servletContext) {
         ServletContextTemplateResolver templateResolver =
                 new ServletContextTemplateResolver(servletContext);
         templateResolver.setTemplateMode("XHTML");
@@ -16,10 +34,20 @@ public class WebConfig {
         // Set to false if you want templates to be automatically
         // updated when modified.
         templateResolver.setCacheable(true);
+
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
+        WebConfig.templateEngine = templateEngine;
+    }
+
+    /**
+     * Serves the template engine that was created at application startup.
+     * @return template engine
+     */
+    public static TemplateEngine getTemplateEngine(){
         return templateEngine;
     }
+
     /**
      * Configures the response in a standard way.
      * @param response
@@ -30,4 +58,5 @@ public class WebConfig {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
     }
+
 }

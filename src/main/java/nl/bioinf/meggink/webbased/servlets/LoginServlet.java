@@ -22,7 +22,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        this.templateEngine = WebConfig.createTemplateEngine(getServletContext());
+        this.templateEngine = WebConfig.getTemplateEngine();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

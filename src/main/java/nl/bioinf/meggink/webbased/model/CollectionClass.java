@@ -1,5 +1,8 @@
 package nl.bioinf.meggink.webbased.model;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,19 +11,35 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectionClass {
-    public static List<Penguin> parsePenguin(String filename){
-        Path path = Paths.get(filename);
+@WebListener
+public class CollectionClass implements ServletContextListener {
+    private static List<Penguin> penguins;
+
+
+    @Override
+    public void contextInitialized(ServletContextEvent servletContextEvent) {
+        System.out.println("[CollectionClass] Initializing penguins");
+        String fileName = "/Users/Marijke/Studie/Thema10/Webbased/webbased/data/species.csv";
+        createCollectionClass(fileName);
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        System.out.println("Shutting down!");
+    }
+
+    public static void createCollectionClass(String fileName){
+        Path path = Paths.get(fileName);
 
         List<Penguin> penguins = new ArrayList<>();
 
-        try (BufferedReader bufferedReader = Files.newBufferedReader(path)){
+        try (BufferedReader reader = Files.newBufferedReader(path)){
             String line;
             int lineNumber = 0;
 
-            while ((line = bufferedReader.readLine()) != null){
+            while ((line = reader.readLine()) != null){
                 lineNumber ++;
-                if (lineNumber > 1){
+                if(lineNumber > 1){
                     String[] elements = line.split(";");
                     String scientificName = elements[0];
                     String englishName = elements[1];
@@ -33,10 +52,13 @@ public class CollectionClass {
                     penguins.add(penguin);
                 }
             }
-
         } catch (IOException ex){
             ex.printStackTrace();
         }
+        CollectionClass.penguins = penguins;
+    }
+
+    public static List<Penguin> getPenguins(){
         return penguins;
     }
 }

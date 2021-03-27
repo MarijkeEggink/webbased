@@ -25,12 +25,11 @@ public class SpeciesServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException{
-        this.templateEngine = WebConfig.createTemplateEngine(getServletContext());
+        this.templateEngine = WebConfig.getTemplateEngine();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String filename = getServletContext().getInitParameter("filename");
-        List<Penguin> penguins = CollectionClass.parsePenguin(filename);
+        List<Penguin> penguins = CollectionClass.getPenguins();
 
         HttpSession session = request.getSession();
         History history;
