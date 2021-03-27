@@ -28,7 +28,7 @@ public class DetailsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        String filename = "/Users/Marijke/Studie/Thema10/Webbased/webbased/data/species.csv";
+        String filename = getServletContext().getInitParameter("filename");
         String species = request.getParameter("species");
         List<Penguin> penguins = CollectionClass.parsePenguin(filename);
         HttpSession session = request.getSession();
