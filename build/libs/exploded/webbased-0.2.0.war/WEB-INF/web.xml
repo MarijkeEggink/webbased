@@ -7,4 +7,9 @@
         <param-name>filename</param-name>
         <param-value>/Users/Marijke/Studie/Thema10/Webbased/webbased/data/species.csv</param-value>
     </context-param>
+
+    <context-param>
+        <param-name>db-type</param-name>
+        <param-value>dummy</param-value>
+    </context-param>
 </web-app>

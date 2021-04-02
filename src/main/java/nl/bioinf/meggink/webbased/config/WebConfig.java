@@ -1,5 +1,7 @@
 package nl.bioinf.meggink.webbased.config;
 
+import nl.bioinf.meggink.webbased.model.DatabaseException;
+import nl.bioinf.meggink.webbased.model.Factory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import javax.servlet.ServletContext;
@@ -16,6 +18,13 @@ public class WebConfig implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         System.out.println("[WebConfig] Initializing template engine");
         createTemplateEngine(servletContextEvent.getServletContext());
+
+        String dbType = servletContextEvent.getServletContext().getInitParameter("db-type");
+        try {
+            Factory.initializeDataSource(dbType);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

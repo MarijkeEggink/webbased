@@ -1,9 +1,7 @@
 package nl.bioinf.meggink.webbased.servlets;
 
 import nl.bioinf.meggink.webbased.config.WebConfig;
-import nl.bioinf.meggink.webbased.model.CollectionClass;
-import nl.bioinf.meggink.webbased.model.History;
-import nl.bioinf.meggink.webbased.model.Penguin;
+import nl.bioinf.meggink.webbased.model.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -17,7 +15,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Queue;
 
 @WebServlet(name = "SpeciesServlet", urlPatterns = "/home")
 public class SpeciesServlet extends HttpServlet {
@@ -29,7 +26,7 @@ public class SpeciesServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Penguin> penguins = CollectionClass.getPenguins();
+        final CollectionInt dataSource = Factory.getDataSource();
 
         HttpSession session = request.getSession();
         History history;
@@ -39,14 +36,21 @@ public class SpeciesServlet extends HttpServlet {
             historyList = history.getHistory();
         }
 
-        Locale locale = request.getLocale();
-        WebContext ctx = new WebContext(
-                request,
-                response,
-                request.getServletContext(),
-                locale);
-        ctx.setVariable("penguins", penguins);
-        ctx.setVariable("historyList", historyList);
-        templateEngine.process("species-listing", ctx, response.getWriter());
+        try {
+            final List<Penguin> penguins = dataSource.getPenguins();
+
+            Locale locale = request.getLocale();
+            WebContext ctx = new WebContext(
+                    request,
+                    response,
+                    request.getServletContext(),
+                    locale);
+            ctx.setVariable("penguins", penguins);
+            ctx.setVariable("historyList", historyList);
+            templateEngine.process("species-listing", ctx, response.getWriter());
+
+        } catch (DatabaseException e){
+            e.printStackTrace();
+        }
     }
 }

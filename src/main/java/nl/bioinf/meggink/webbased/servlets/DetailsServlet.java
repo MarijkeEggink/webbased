@@ -1,10 +1,7 @@
 package nl.bioinf.meggink.webbased.servlets;
 
 import nl.bioinf.meggink.webbased.config.WebConfig;
-import nl.bioinf.meggink.webbased.model.CollectionClass;
-import nl.bioinf.meggink.webbased.model.History;
-import nl.bioinf.meggink.webbased.model.Penguin;
-import nl.bioinf.meggink.webbased.model.User;
+import nl.bioinf.meggink.webbased.model.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -28,6 +25,7 @@ public class DetailsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        final CollectionInt dataSource = Factory.getDataSource();
         String species = request.getParameter("species");
         List<Penguin> penguins = CollectionClass.getPenguins();
         HttpSession session = request.getSession();
@@ -52,16 +50,22 @@ public class DetailsServlet extends HttpServlet {
                 request.getServletContext(),
                 locale);
 
-        for (Penguin penguin: penguins){
-            String name = penguin.getSpecies();
-            if (name.equals(species)){
-                history.addItem(penguin);
-                ctx.setVariable("historyList", history.getHistory());
-                ctx.setVariable("penguin", penguin);
-                ctx.setVariable("user", user);
-            }
-        }
+        try {
+            final List<Penguin> penguins1 = dataSource.getPenguins();
 
-        templateEngine.process("species", ctx, response.getWriter());
+            for (Penguin penguin: penguins){
+                String name = penguin.getSpecies();
+                if (name.equals(species)){
+                    history.addItem(penguin);
+                    ctx.setVariable("historyList", history.getHistory());
+                    ctx.setVariable("penguin", penguin);
+                    ctx.setVariable("user", user);
+                }
+            }
+
+            templateEngine.process("species", ctx, response.getWriter());
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -15,11 +15,10 @@ import java.util.List;
 public class CollectionClass implements ServletContextListener {
     private static List<Penguin> penguins;
 
-
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         System.out.println("[CollectionClass] Initializing penguins");
-        String fileName = "/Users/Marijke/Studie/Thema10/Webbased/webbased/data/species.csv";
+        String fileName = servletContextEvent.getServletContext().getInitParameter("filename");
         createCollectionClass(fileName);
     }
 
