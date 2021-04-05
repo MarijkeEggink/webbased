@@ -1,0 +1,42 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{tab.title}">_offline_</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="jumbotron text-center">
+    <h1 th:text="#{page.title}">_offline species_</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 offset-1">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th th:text="#{scientific.name}">_offline scientific_</th>
+                    <th th:text="#{english.name}">_offline english_</th>
+                    <th th:text="#{dutch.name}">_offline dutch_</th>
+                    <th th:text="#{length}">_offline length_</th>
+                    <th th:text="#{weight}">_offline weight_</th>
+                    <th th:text="#{age}">_offline age_</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="penguin:${penguins}">
+                    <td><a th:href="@{'/species.detail?species=' + ${penguin.getSpecies()}}"
+                           th:text="${penguin.getScientificName()}" class="text-body">_scientific_</a></td>
+                    <td th:text="${penguin.getEnglishName()}">_english_</td>
+                    <td th:text="${penguin.getDutchName()}">_dutch_</td>
+                    <td th:text="${penguin.getLength()}">_length_</td>
+                    <td th:text="${penguin.getWeight()}">_weight_</td>
+                    <td th:text="${penguin.getAge()}">_age_</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div th:insert="~{templates :: history-class}"></div>
+</body>

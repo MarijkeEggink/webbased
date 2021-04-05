@@ -37,11 +37,6 @@ public class DetailsServlet extends HttpServlet {
             history = (History)session.getAttribute("history");
         }
 
-        User user = null;
-        if (session.getAttribute("user") != null){
-            user = (User)session.getAttribute("user");
-        }
-
         WebConfig.configureResponse(response);
         Locale locale = request.getLocale();
         WebContext ctx = new WebContext(
@@ -59,7 +54,6 @@ public class DetailsServlet extends HttpServlet {
                     history.addItem(penguin);
                     ctx.setVariable("historyList", history.getHistory());
                     ctx.setVariable("penguin", penguin);
-                    ctx.setVariable("user", user);
                 }
             }
 
